@@ -1,10 +1,21 @@
-# PhingPyrus
+# PhingPyrus: Pyrus tasks for the Phing build tool.
 
-Basic information about the project.
+This package provides Phing tasks for managing PEAR packages with Pyrus.
 
 ## Installation
 
-Instructions on how to install
+Requires:
+
+  * [Pyrus.phar](http://pear2.php.net)
+  * PHP 5.3.x
+  * [phing](http://phing.info)
+
+Install using PEAR:
+
+    pear channel-discover pear.querypath.org
+    pear install querypath/PhingPyrus
+
+Or you can clone the github repository.
 
 ## Usage
 

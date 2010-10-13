@@ -336,6 +336,13 @@ Edit project.properties (or build.xml) to set the above.
       <fileset refid="licensefiles"/>
     </copy>
     
+    <!-- Pyrus wants README, not README.md -->
+    <copy file="${releasedir}/README.md" tofile="${releasedir}/README"/>
+    
+    <!-- Create API and RELEASE files -->
+    <touch file="${releasedir}/API-${version}"/>
+    <touch file="${releasedir}/RELEASE-${version}"/>
+    
     <!-- Copy source code, doing token replacement on version. -->
     <copy todir="${releasedir}/src">
       <filterchain>
@@ -406,7 +413,7 @@ Edit project.properties (or build.xml) to set the above.
        </mapping>
     </pearpkg2>
     -->
-    <pyrusmake dryrun="yes" dir="${releasedir}" packagename="${projectname}" channel="${pear.channel}"/>
+    <pyrusmake dir="${releasedir}" packagename="${projectname}" channel="${pear.channel}"/>
     
     <!-- Move the package.xml to the releasedir -->
     <move file="${builddir}/package2.xml" tofile="${packagedir}/package.xml"/>
