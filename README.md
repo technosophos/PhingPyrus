@@ -6,8 +6,8 @@ This package provides Phing tasks for managing PEAR packages with Pyrus.
 
 Requires:
 
-  * [Pyrus.phar](http://pear2.php.net)
   * PHP 5.3.x
+  * [Pyrus.phar](http://pear2.php.net)
   * [phing](http://phing.info)
 
 Install using PEAR:
@@ -28,13 +28,15 @@ To use this package in your Phing build.xml scripts, you will need to include th
 
     <!-- Pyrus tasks. -->
     <taskdef classname="PhingPyrus.Task.PyrusMakeTask" name="pyrusmake"/>
+    <taskdef classname="PhingPyrus.Task.PyrusPackageTask" name="pyrusmake"/>
+    <taskdef classname="PhingPyrus.Task.PyrusHelpTask" name="pyrushelp"/>
     <taskdef classname="PhingPyrus.Task.PyrusExecTask" name="pyrusexec"/>
 
-This package provides the following tasks.
+This package provides common tasks. We will gradually expand the list of tasks, but if there is something you want to do with Pyrus, it is likely that you can do it with `pyrusexec`.
 
 ### pyrusmake
 
-Use this to execute a Pyrus make command.
+Use this to execute a Pyrus make command. This generates a `package.xml` file. Generally you will want to use this before running `pyruspackage` to build the actual package. In between, you may want to use the `qpreplace` task from [PhingQueryPath](http://github.com/technosophos) to modify the `package.xml` file.
 
 To enable:
 
@@ -42,16 +44,46 @@ To enable:
 
 Basic example:
 
-    <pyrusmake/>
+    <pyrusmake packagename="MyPackage" dir="mycode/" channel="pear.example.com"/>
 
 Full example:
 
-    <pyrusmake packageformat="tgz" packagexmlscript="some.php"/>
+    <pyrusmake 
+      packagename="MyPackage" 
+      dir="mycode/" 
+      channel="pear.example.com" 
+      packageformat="tgz" 
+      stub="stub.php"
+      packagexmlscript="some.php"/>
+
+### pyruspackage
+
+Use this to execute a Pyrus build command (and build a PEAR package from package.xml).
+
+To enable:
+
+    <taskdef classname="PhingPyrus.Task.PyrusPackageTask" name="pyruspackage"/>
+
+Basic example:
+
+    <pyruspackage packagexml="path/to/package.xml"/>
+
+Full example:
+
+    <pyruspackage 
+      packagexml="path/to/package.xml" 
+      outputfile="mypackage-1.0.0" 
+      stub="mypharstub.php"
+      extrasetup="domorestuff.php"
+      archiveformat="tgz,tar,zip,phar"
+      />
+
+Note that stub only works for Phar archives. By default, `archiveformat` is `tgz`.
 
 ## pyrusexec
 
 Execute a raw Pyrus command. This simulates a command-line run of Pyrus (though Pyrus is 
-bootstrapped within Phing.)
+bootstrapped within Phing.) Everything you pass into `pyrusexec` will be passed on to Pyrus.
 
 To enable:
 

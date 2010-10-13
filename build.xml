@@ -189,6 +189,7 @@ To print this message, do:
   <includepath classpath="/Users/mbutcher/Code"/> <!-- Pyrus is here. -->
   <includepath classpath="./src"/>
   <taskdef classname="PhingPyrus.Task.PyrusMakeTask" name="pyrusmake"/>
+  <taskdef classname="PhingPyrus.Task.PyrusPackageTask" name="pyrusmake"/>
   <taskdef classname="PhingPyrus.Task.PyrusHelpTask" name="pyrushelp"/>
   <taskdef classname="PhingPyrus.Task.PyrusExecTask" name="pyrusexec"/>
   
