@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project 
   name="PhingPyrus" 
-  description="A PHP project"
+  description="Expose Pyrus as a Phing Task."
   default="longhelp">
 <!--
 This is the Phing build file for PhingPyrus.
@@ -157,7 +157,7 @@ To print this message, do:
   <property name="project.homepage" value="http://github.com/technosophos/metaphing"/>
   <property name="project.summary" value="A PHP project"/>
   <property name="project.description">
-    This is a useful PHP project.
+    Provide Phing tasks for working with Pyrus.
   </property>
   <property name="project.license" value="MIT License"/>
   <property name="project.php.version" value="5.1.0"/>
@@ -185,12 +185,19 @@ To print this message, do:
   <taskdef classname="PhingPirum.Task.PirumAddTask" name="pirumadd"/>
   <property name="pearchannel" value="../pear.querypath.org"/>
   -->
+  <!-- Pyrus tasks. -->
+  <includepath classpath="/Users/mbutcher/Code"/> <!-- Pyrus is here. -->
+  <includepath classpath="./src"/>
+  <taskdef classname="PhingPyrus.Task.PyrusMakeTask" name="pyrusmake"/>
+  <taskdef classname="PhingPyrus.Task.PyrusHelpTask" name="pyrushelp"/>
+  <taskdef classname="PhingPyrus.Task.PyrusExecTask" name="pyrusexec"/>
   
   <!-- Directory locations -->
   <property name="srcdir" value="./src"/>
   <property name="testdir" value="./test"/>
   <property name="builddir" value="./bin/build"/>
   <property name="docsdir" value="./doc"/>
+  <property name="datadir" value="./data"/>
   <property name="packagedir" value="./dist"/>
   <property name="exampledir" value="./examples"/>
   <property name="tutorialdir" value="./tutorials"/>
@@ -350,9 +357,11 @@ Edit project.properties (or build.xml) to set the above.
     </copy>
     
     <!-- Copy tutorials -->
+    <!--
     <copy todir="${releasedir}/tutorials">
       <fileset refid="tutorials"/>
     </copy>
+    -->
     
     <!-- Copy documentation --> 
     <copy todir="${releasedir}/doc">
@@ -365,6 +374,7 @@ Edit project.properties (or build.xml) to set the above.
     </copy>
     
     <!-- Create a PEAR package.xml file -->
+    <!--
     <pearpkg2 name="${projectname}" dir="./">
        <fileset dir="${releasedir}">
          <include name="**/**"/>
@@ -395,6 +405,8 @@ Edit project.properties (or build.xml) to set the above.
         </element>
        </mapping>
     </pearpkg2>
+    -->
+    <pyrusmake dryrun="yes" dir="${releasedir}" packagename="${projectname}" channel="${pear.channel}"/>
     
     <!-- Move the package.xml to the releasedir -->
     <move file="${builddir}/package2.xml" tofile="${packagedir}/package.xml"/>
@@ -478,6 +490,8 @@ Edit project.properties (or build.xml) to set the above.
   -->
   <target name="tmtarget" depends="info" description="Target for textmate">
     <echo>Executed tmtarget in build.xml.</echo>
+    <pyrushelp/>
+    <pyrusexec command="help make"/>
   </target>
   
   <!-- TARGET
