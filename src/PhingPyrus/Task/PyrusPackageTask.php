@@ -5,12 +5,13 @@
 require_once 'PhingPyrus/Util/PyrusFactory.php';
 require_once 'phing/Task.php';
 
-class PyrusHelpTask extends Task {
+class PyrusPackageTask extends Task {
   
   protected $packageXML = 'package.xml';
   protected $outputFile = NULL;
   protected $stub = NULL;
   protected $extrasetup = NULL;
+  protected $formats = array();
   
   public function init(){}
   

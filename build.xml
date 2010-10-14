@@ -179,17 +179,16 @@ To print this message, do:
     * Two taskdefs for Phing Pirum tasks
     * A property, pearchannel, setting the location of your PEAR channel.
   -->
-  <!--
   <includepath classpath="../Phing-Pirum/src"/>
   <taskdef classname="PhingPirum.Task.PirumBuildTask" name="pirumbuild"/>
   <taskdef classname="PhingPirum.Task.PirumAddTask" name="pirumadd"/>
   <property name="pearchannel" value="../pear.querypath.org"/>
-  -->
+
   <!-- Pyrus tasks. -->
   <includepath classpath="/Users/mbutcher/Code"/> <!-- Pyrus is here. -->
   <includepath classpath="./src"/>
   <taskdef classname="PhingPyrus.Task.PyrusMakeTask" name="pyrusmake"/>
-  <taskdef classname="PhingPyrus.Task.PyrusPackageTask" name="pyrusmake"/>
+  <taskdef classname="PhingPyrus.Task.PyrusPackageTask" name="pyruspackage"/>
   <taskdef classname="PhingPyrus.Task.PyrusHelpTask" name="pyrushelp"/>
   <taskdef classname="PhingPyrus.Task.PyrusExecTask" name="pyrusexec"/>
   
@@ -414,21 +413,32 @@ Edit project.properties (or build.xml) to set the above.
        </mapping>
     </pearpkg2>
     -->
-    <pyrusmake dir="${releasedir}" packagename="${projectname}" channel="${pear.channel}"/>
+    <pyrusmake dir="${releasedir}" packagename="${projectname}" channel="${pear.channel}" packagexmlsetup="packagexmlsetup.php" dryrun="yes"/>
     
+    <!--
+    <pyruspackage packagexml="${releasedir}/package.xml"/>
+    
+    <move file="./${projectname}-${version}.tgz"
+       tofile="${packagedir}/${projectname}-${version}.tgz"/>
+    
+    -->
     <!-- Move the package.xml to the releasedir -->
-    <move file="${builddir}/package2.xml" tofile="${packagedir}/package.xml"/>
+    <!--move file="${builddir}/package2.xml" tofile="${packagedir}/package.xml"/-->
     
     <!-- Create Gzipped Tar file that acts like a PEAR package. This will be put in dist/ -->
+    <!--
     <tar destfile="${packagedir}/${projectname}-${version}.tgz" compression="gzip">
       <fileset dir="${builddir}">
         <include name="${projectname}-${version}/**/*"/>
         <include name="package.xml"/>
       </fileset>
     </tar>
+    -->
     
     <!-- Create a ZIP version which is NOT a PEAR package. Put in dist/. -->
+    <!--
     <zip destfile="${packagedir}/${projectname}-${version}.zip" basedir="${releasedir}"/>
+    -->
   </target>
   
   <!-- TARGET
@@ -499,7 +509,6 @@ Edit project.properties (or build.xml) to set the above.
   <target name="tmtarget" depends="info" description="Target for textmate">
     <echo>Executed tmtarget in build.xml.</echo>
     <pyrushelp/>
-    <pyrusexec command="help make"/>
   </target>
   
   <!-- TARGET
